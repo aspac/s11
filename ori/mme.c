@@ -33,7 +33,7 @@ int main()
 	u_char apn_name[]="wired-n-wireless.blogspot.com";
 	struct sockaddr_in ggsn,sgsn;
 	
-	apnlength = strnlen(apn_name);
+	apnlength = strlen(apn_name);
 	
 	bzero(&sgsn,sizeof(sgsn));
 	bzero(buffer,sizeof(buffer)); /*Received buffer*/
