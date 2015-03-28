@@ -35,9 +35,20 @@ class MSISDN(Structure):
 
 class MEI(Structure):
     _pack_ = 1
-    _fields_ = [("type", c_ubyte),("length", c_ushort),
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
                 ("flags", c_ubyte), ("mei_id", c_ulonglong)]
 
+class SERV_NET(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("servnet", c_ulonglong)]
+    def __init__(self):self.msisdn_id = 24
+
+class RAT(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("rat_type", c_ubyte)]
+    
 
 class GTPMessage(object):
 
