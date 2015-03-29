@@ -10,7 +10,6 @@ Santosh Kumar Dornal < https://code.google.com/p/s11interface/ >
 import socket
 from ctypes import *
 
-
 _isdebug = False
 _GTP_PORT = 2123
 
@@ -96,7 +95,44 @@ class APN_REST(Structure):
     _pack_ = 1
     _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
                 ("flags", c_ubyte), ("rest_value", c_ubyte)]
-                
+          
+          
+class EBI(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("eps_id", c_ubyte)]     
+
+#todo : host to network order
+class FQOS(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("qci", c_ubyte),
+                ("max_uplink", c_ulonglong),("max_downlink", c_ulonglong),
+                 ("gr_uplink", c_ulonglong),("gr_downlink"), c_ulonglong]
+    def __init__(self):
+        self.max_uplink = 40
+        self.max_downlink = 40
+        self.gr_uplink = 40
+        self.gr_downlink = 40 
+ 
+#todo : host to network order
+class BQOS(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("arp", c_ubyte), ("qci", c_ubyte),
+                ("max_uplink", c_ulonglong),("max_downlink", c_ulonglong),
+                 ("gr_uplink", c_ulonglong),("gr_downlink"), c_ulonglong]
+    def __init__(self):
+        self.max_uplink = 40
+        self.max_downlink = 40
+        self.gr_uplink = 40
+        self.gr_downlink = 40         
+            
+            
+class CHARG_CHAR(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("value", c_ubyte), ("flags1", c_ubyte)]
                                 
 
 #--------------------------- Bootstrap --------------------------------------
