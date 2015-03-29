@@ -4,17 +4,28 @@ Porting of LTE S11
 Santosh Kumar Dornal < https://code.google.com/p/s11interface/ >
 
 @author: dana.satriya@rwth-aachen.de
-
-         
+  
 """
 
 import socket
 from ctypes import *
 
+
 _isdebug = False
 _GTP_PORT = 2123
+
 #----------------------- Header -------------------------------
 # 3GPP TS 29274 rel 11
+
+class RMD(Structure):
+    _pack_ = 1
+    _fields_ = [("flags", c_ubyte),("m_type", c_ubyte)]
+    
+class RMN(Structure):
+    _pack_ = 1
+    _fields_ = [ ("m_type", c_ubyte), ("m_length", c_ushort),
+                ("colour_id", c_ulonglong)]
+    def __init__(self):self.colour_id = 23
     
 class GTP(Structure):
     _pack_ = 1
@@ -48,51 +59,45 @@ class RAT(Structure):
     _pack_ = 1
     _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
                 ("flags", c_ubyte), ("rat_type", c_ubyte)]
+
+class INDICATION(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("ind_flags", c_ushort)]
     
-
-class GTPMessage(object):
-
-     def CreateSessionRequest(self):
-        return Message.createRequest('CSReq', str(self.request.uri), self.headers) if self.request and not self.server else None
-    
-     def CreateSessionResponse(self):
-        return Message.createRequest('CSResp', str(self.request.uri), self.headers) if self.request and not self.server else None 
-
-     def CreateModifyBearerRequest(self):
-        return Message.createRequest('MBreq', str(self.request.uri), self.headers) if self.request and not self.server else None 
-
-     def CreateModifyBearerResponse(self):
-        return Message.createRequest('MBresp', str(self.request.uri), self.headers) if self.request and not self.server else None 
-
-     def BearerResourceCommand(self):
-        return Message.createRequest('BRCreq', str(self.request.uri), self.headers) if self.request and not self.server else None 
-
-     def CreateBearerRequest(self):
-        return Message.createRequest('CBRreq', str(self.request.uri), self.headers) if self.request and not self.server else None 
-
-     def CreateBearerResponse(self):
-        return Message.createRequest('CBRresp', str(self.request.uri), self.headers) if self.request and not self.server else None 
-
-
-class Message(object):
-    '''Creation of GTP message shall go through this class
-    msg = Message()
-    m.type = 'createsessionrequest'
-    '''
-                    
+class FTEID(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("f_flags",c_ubyte ),
+                 ("teid_gre", c_ulong), ("ip_address", c_ulong)]
+                 
+class APN(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("apn_name", c_ubyte)]
                 
-    def __init__(self, value=None):
-        self.method = self.uri = self.response = self.responsetext = self.protocol = self._body = None
-        if value: self._parse(value)        
+class CELLMODE(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("cell", c_ubyte)]
+                             
+class PDNTYPE(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("p_type", c_ubyte)]
 
-    def __getattr__(self, name): 
-       return self.__getitem__(name)         
-    def __getattribute__(self, name): 
-        return object.__getattribute__(self, name.lower())
-        
-    def __setattr__(self, name, value): 
-        object.__setattr__(self, name.lower(), value)    
+class PAA(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("pdn_type", c_ubyte), 
+                ("pdn_addr", c_ulong)]
 
+class APN_REST(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("rest_value", c_ubyte)]
+                
+                                
 
 #--------------------------- Bootstrap --------------------------------------
 if __name__ == '__main__':
