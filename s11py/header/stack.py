@@ -132,9 +132,12 @@ class BQOS(Structure):
 class CHARG_CHAR(Structure):
     _pack_ = 1
     _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
-                ("flags", c_ubyte), ("value", c_ubyte), ("flags1", c_ubyte)]
+                ("flags", c_ubyte), ("value", c_ubyte)]
                                 
-
+class CAUSE(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("value", c_ubyte), ("flags1", c_ubyte)]
 #--------------------------- Bootstrap --------------------------------------
 if __name__ == '__main__':
   
