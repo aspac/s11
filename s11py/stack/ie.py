@@ -7,13 +7,9 @@ Santosh Kumar Dornal < https://code.google.com/p/s11interface/ >
   
 """
 
-import socket
 from ctypes import *
 
-_isdebug = False
-_GTP_PORT = 2123
-
-#----------------------- Header -------------------------------
+    
 # 3GPP TS 29274 rel 11
 
 class RMD(Structure):
@@ -218,3 +214,5 @@ class NODETYPE(Structure):
                 ("flags", c_ubyte), ("value", c_ubyte)]    
                 
 #--------------------------- Bootstrap --------------------------------------
+if __name__ == '__main__':
+    print "hello  stack "
