@@ -8,6 +8,7 @@ Santosh Kumar Dornal < https://code.google.com/p/s11interface/ >
 """
 
 import socket
+import ctypes
 from ctypes import *
 
 _isdebug = False
@@ -108,7 +109,7 @@ class FQOS(Structure):
     _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
                 ("flags", c_ubyte), ("qci", c_ubyte),
                 ("max_uplink", c_ulonglong),("max_downlink", c_ulonglong),
-                 ("gr_uplink", c_ulonglong),("gr_downlink"), c_ulonglong]
+                 ("gr_uplink", c_ulonglong),("gr_downlink", c_ulonglong)]
     def __init__(self):
         self.max_uplink = 40
         self.max_downlink = 40
@@ -121,13 +122,12 @@ class BQOS(Structure):
     _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
                 ("flags", c_ubyte), ("arp", c_ubyte), ("qci", c_ubyte),
                 ("max_uplink", c_ulonglong),("max_downlink", c_ulonglong),
-                 ("gr_uplink", c_ulonglong),("gr_downlink"), c_ulonglong]
+                 ("gr_uplink", c_ulonglong),("gr_downlink", c_ulonglong)]
     def __init__(self):
         self.max_uplink = 40
         self.max_downlink = 40
         self.gr_uplink = 40
         self.gr_downlink = 40         
-            
             
 class CHARG_CHAR(Structure):
     _pack_ = 1
@@ -138,9 +138,30 @@ class CAUSE(Structure):
     _pack_ = 1
     _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
                 ("flags", c_ubyte), ("value", c_ubyte), ("flags1", c_ubyte)]
+                
+class PACKET_FILTER(Structure):
+    _pack_ = 1
+    _fields_ = [("packet_id", c_ubyte),("precedence", c_ubyte),
+                ("m_length", c_ubyte), ("component_id", c_ubyte), 
+                ("port_type", c_ushort)]
+
+class TAD(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ubyte),
+                ("flags", c_ubyte), ("description", c_ubyte), 
+                ("tad_length", c_ushort), ("tft", c_ushort),
+                ("p_filter", PACKET_FILTER)]
+
+class BEARER_CONT(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ubyte),
+                ("flags", c_ubyte), ("description", c_ubyte), 
+                ("tad_length", c_ushort), ("tft", c_ushort),
+                ("p_filter", PACKET_FILTER)]
+  
+                
 #--------------------------- Bootstrap --------------------------------------
 if __name__ == '__main__':
-  
      m = GTP()
      if m:
          m.flags=0x48
@@ -156,6 +177,14 @@ if __name__ == '__main__':
      x = MSISDN()
      print x.msisdn_id
 
+     pf = PACKET_FILTER(1,2,3,4,5)
+     print pf.packet_id
+     
+     print "check TAD.."
+     tad = TAD(1,2,3,4,5,6,pf)
+     print tad.p_filter.packet_id, tad.p_filter.port_type
+    # print tad.p_filter.packet_id
+     
      
      UDP_IP = "127.0.0.1"
      sock = socket.socket(socket.AF_INET, # Internet
