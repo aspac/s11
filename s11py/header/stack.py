@@ -196,8 +196,27 @@ class BEARER_CONT_6(Structure):
     _pack_ = 1
     _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
                 ("flags", c_ubyte), ("eb_id", c_ubyte), 
-                ("ftid", FTEID), ("ft_id", FTEID), 
                 ("ie_cause",CAUSE)]   
+                
+class RECOVERY(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("value", c_ubyte)]   
+
+class APN_RESTRICT(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("value", c_ubyte)]   
+                
+class PTI(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("value", c_ubyte)]                   
+                                
+class NODETYPE(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("value", c_ubyte)]    
                 
 #--------------------------- Bootstrap --------------------------------------
 if __name__ == '__main__':
