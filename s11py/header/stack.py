@@ -8,7 +8,6 @@ Santosh Kumar Dornal < https://code.google.com/p/s11interface/ >
 """
 
 import socket
-import ctypes
 from ctypes import *
 
 _isdebug = False
@@ -152,13 +151,53 @@ class TAD(Structure):
                 ("tad_length", c_ushort), ("tft", c_ushort),
                 ("p_filter", PACKET_FILTER)]
 
+# ToDo:.. err? shouldnt bearer is nested list..?
 class BEARER_CONT(Structure):
     _pack_ = 1
-    _fields_ = [("m_type", c_ubyte),("m_length", c_ubyte),
-                ("flags", c_ubyte), ("description", c_ubyte), 
-                ("tad_length", c_ushort), ("tft", c_ushort),
-                ("p_filter", PACKET_FILTER)]
-  
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("eb_id", c_ubyte), 
+                ("ftid", FTEID), ("ft_id", FTEID),
+                ("ie_cause", CAUSE), ("ie_charging", CHARG_CHAR)]
+
+class BEARER_CONT_1(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("eb_id", c_ubyte), 
+                ("ftid", FTEID), ("ie_cause", CAUSE)]
+
+class BEARER_CONT_2(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("eb_id", c_ubyte), 
+                ("ie_bqos", BQOS)]             
+                
+class BEARER_CONT_3(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("eb_id", c_ubyte), 
+                ("ftid", FTEID), ("ie_bqos", BQOS)]
+
+class BEARER_CONT_4(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("eb_id", c_ubyte), 
+                 ("ie_charging", CHARG_CHAR)
+                ("ftid", FTEID), ("ft_id", FTEID), 
+                ("tft1",TAD)]
+
+class BEARER_CONT_5(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("eb_id", c_ubyte), 
+                ("ftid", FTEID), ("ft_id", FTEID), 
+                ("ie_cause",CAUSE)]                
+                
+class BEARER_CONT_6(Structure):
+    _pack_ = 1
+    _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
+                ("flags", c_ubyte), ("eb_id", c_ubyte), 
+                ("ftid", FTEID), ("ft_id", FTEID), 
+                ("ie_cause",CAUSE)]   
                 
 #--------------------------- Bootstrap --------------------------------------
 if __name__ == '__main__':
