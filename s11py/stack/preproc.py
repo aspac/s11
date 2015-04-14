@@ -8,7 +8,7 @@ Created on Mon Mar 30 21:35:11 2015
 
 class GTP_PORT(object):
     
-       '''Convert a hextring with a specified base to integer'''
+  
     def __init__(self):
         self._GTPC_PORT = 2123
         self._GTPU_PORT = 2152
