@@ -15,6 +15,7 @@ if __name__ == '__main__':
 
 from stack.ie import *
 from stack.preproc import *
+from tools.tool import HEX_TOOL
 import binascii
 
 def msglen_htons(msg):
@@ -26,8 +27,7 @@ def bin_encoder(msisdn):
 
 if __name__ == '__main__':
         
-     stdVar = DEFINE_STANDARD()
-     
+          
      m = PAA()
      if m:
          m.flags=0x48
@@ -68,10 +68,14 @@ if __name__ == '__main__':
      #1, check C_types type and check len , of not append with 0x0
      print "value is ", hex(msisdn.flags)
      
-                     
      gtp = GTP()
      gtp.flags = 0x48
-     gtp.m_type = 0x20
+     gtpc = GTPC_MSG()
+     tool = HEX_TOOL()
+     
+     gtp.m_type = tool.hex_convert_from_int(gtpc.GTPC_CreateSessionRequest, 0)
+      
+
      #gtp.m_length  = 8 + sizeof(imsi)
      gtp.m_length = socket.htons(8 + sizeof(imsi)+sizeof(msisdn))
      #gtp.m_length = 
@@ -93,5 +97,6 @@ if __name__ == '__main__':
      sock = socket.socket(socket.AF_INET, # Internet
                         socket.SOCK_DGRAM) #
                         
-     sock.sendto(buf, (UDP_IP, stdVar.GTP_PORT))
+     gtp_comm = GTP_PORT()                                           
+     sock.sendto(buf, (UDP_IP, gtp_comm.GTPC_PORT))
                         
