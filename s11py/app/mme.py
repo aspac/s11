@@ -29,7 +29,7 @@ def bin_encoder(msisdn):
 if __name__ == '__main__':
         
 
-     gtpc = GTPC_MSG()
+     gtpc = GTPC_MSGTYPE()
      tool = HEX_TOOL()
               
      # print tad.p_filter.packet_id
@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
     #ToDo : check on hex
      #1, check C_types type and check len , of not append with 0x0
-     print "value is ", hex(msisdn.flags)
+     #print "value is ", hex(msisdn.flags)
      
      gtp = GTP()
      gtp.flags = 0x48
@@ -66,6 +66,7 @@ if __name__ == '__main__':
      imsi_buf = string_at(byref(imsi), sizeof(imsi))         
      msisdn_buf = string_at(byref(msisdn), 10)     
      gtp_buf = string_at(byref(gtp), sizeof(gtp))
+     
      
      #print "size of gtp_buf is ", sizeof(gtp)
      #print "MSISDN buff is ", binascii.hexlify(msisdn_buf)
