@@ -25,30 +25,14 @@ def bin_encoder(msisdn):
      for field_name, field_type in msisdn._fields_:
          print field_name + "is" , field_type
 
+
 if __name__ == '__main__':
         
-          
-     m = PAA()
-     if m:
-         m.flags=0x48
-         m.m_type=0x20
-         m.teid=0x000000
-         m.spare=0x000000
-     else:
-         exit(1)
-         
-     print m.m_type
-     print m.flags
 
-     x = MSISDN()
-     print x.msisdn_id
-
-     pf = PACKET_FILTER(1,2,3,4,5)
-         
-     print "check TAD.."
-     tad = TAD(1,2,3,4,5,6,pf)
-     
-    # print tad.p_filter.packet_id
+     gtpc = GTPC_MSG()
+     tool = HEX_TOOL()
+              
+     # print tad.p_filter.packet_id
      imsi = IMSI()
      imsi.m_type=0x01;
      #TO DO : m_length class 
@@ -56,7 +40,6 @@ if __name__ == '__main__':
      imsi.flags=0x00;
      imsi.ims_id= 0x1000000004410622;
      
-    
      msisdn = MSISDN()
      msisdn.m_type = 0x4c;
      msisdn.m_length = msglen_htons(6); #4 byte, if not append 00 0something
@@ -70,19 +53,14 @@ if __name__ == '__main__':
      
      gtp = GTP()
      gtp.flags = 0x48
-     gtpc = GTPC_MSG()
-     tool = HEX_TOOL()
      
      gtp.m_type = tool.hex_convert_from_int(gtpc.GTPC_CreateSessionRequest, 0)
-      
-
      #gtp.m_length  = 8 + sizeof(imsi)
      gtp.m_length = socket.htons(8 + sizeof(imsi)+sizeof(msisdn))
      #gtp.m_length = 
      gtp.teid = socket.htonl(0x000000);
      gtp.seq_no=socket.htons(0x0001);
      gtp.spare=0x0000;
-                
     
      #..to do  : wrapper   
      imsi_buf = string_at(byref(imsi), sizeof(imsi))         

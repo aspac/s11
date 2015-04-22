@@ -7,47 +7,63 @@ Santosh Kumar Dornal < https://code.google.com/p/s11interface/ >
   
 """
 
+import sys,os.path
+
+
+#add other libraries in the sys.path
+if __name__ == '__main__': 
+    f = os.path.dirname(sys.path.pop(0))
+    sys.path.append(f)
+    
+from stack.ie import *
+from stack.preproc import *
+from tools.tool import HEX_TOOL
+import binascii
 
 
 class GTPMessage(object):
-
-     def CreateSessionRequest(self):
-        return Message.createRequest('CSReq', str(self.request.uri), self.headers) if self.request and not self.server else None
     
-     def CreateSessionResponse(self):
-        return Message.createRequest('CSResp', str(self.request.uri), self.headers) if self.request and not self.server else None 
+     def __init__(self, gtp_type, teid, seq_no, ies):
+         self.flags = 0x48
+         self.spare = 0x0000
+         self.gtp_type = gtp_type
+         self.teid = teid
+         self.ies = ies
+         
+     def get_msgtype(msg_type):
+         tools = HEX_TOOL()
+         gtp_type = tools.hex_convert_from_int(msg_type, 0)
+         return gtp_type
+     
+     def get_msglength(msg_len):
+         return socket.htons(8 + sizeof(imsi)+sizeof(msisdn))
 
-     def CreateModifyBearerRequest(self):
-        return Message.createRequest('MBreq', str(self.request.uri), self.headers) if self.request and not self.server else None 
+     def create_msg(flags, gtp_type, teid, seq_no, spare, ies):
+         gtp_buf = GTP()
+          
+         gtp_buf.flags = flags
+         gtp_buf.m_type = get_msgtype(gtp_type)
+         gtp_buf.msg_length = get_msglength(ies)
+         gtp_buf.teid = socket.htonl(teid)
+         gtp_buf.seq_no = socket.htons(seq_no)
+         gtp_buf.spare= spare
+         
+         return gtp_buf
+        
+     def log_value():
+         print "123"
+                 
 
-     def CreateModifyBearerResponse(self):
-        return Message.createRequest('MBresp', str(self.request.uri), self.headers) if self.request and not self.server else None 
 
-     def BearerResourceCommand(self):
-        return Message.createRequest('BRCreq', str(self.request.uri), self.headers) if self.request and not self.server else None 
+if __name__ == '__main__':
 
-     def CreateBearerRequest(self):
-        return Message.createRequest('CBRreq', str(self.request.uri), self.headers) if self.request and not self.server else None 
-
-     def CreateBearerResponse(self):
-        return Message.createRequest('CBRresp', str(self.request.uri), self.headers) if self.request and not self.server else None 
-
-
-class Message(object):
-    '''Creation of GTP message shall go through this class
-    msg = Message()
-    m.type = 'createsessionrequest'
-    '''
+    print "create GTP message "
+    gtp_msgtype = GTPC_MSGTYPE()
+    
+    
+    gtp = GTPMessage(gtp_msgtype.GTPC_CreateSessionRequest, 0x000000, 0x0001, 0x12321321)
+    print gtp.__dict__
+    
                     
                 
-    def __init__(self, value=None):
-        self.method = self.uri = self.response = self.responsetext = self.protocol = self._body = None
-        if value: self._parse(value)        
-
-    def __getattr__(self, name): 
-       return self.__getitem__(name)         
-    def __getattribute__(self, name): 
-        return object.__getattribute__(self, name.lower())
-        
-    def __setattr__(self, name, value): 
-        object.__setattr__(self, name.lower(), value)    
+  

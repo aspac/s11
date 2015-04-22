@@ -11,6 +11,13 @@ from ctypes import *
 
     
 # 3GPP TS 29274 rel 11
+class GTP(Structure):
+    _pack_ = 1
+    _fields_ = [("flags", c_ubyte),("m_type", c_ubyte),
+                ("m_length", c_ushort), ("teid", c_ulong),
+                ("seq_no", c_ushort),("spare", c_ushort)]    
+                
+#----------- IES block                
 
 class RMD(Structure):
     _pack_ = 1
@@ -22,11 +29,6 @@ class RMN(Structure):
                 ("colour_id", c_ulonglong)]
     def __init__(self):self.colour_id = 23
     
-class GTP(Structure):
-    _pack_ = 1
-    _fields_ = [("flags", c_ubyte),("m_type", c_ubyte),
-                ("m_length", c_ushort), ("teid", c_ulong),
-                ("seq_no", c_ushort),("spare", c_ushort)]
 
 class IMSI(Structure):
     _pack_ = 1
@@ -213,6 +215,3 @@ class NODETYPE(Structure):
     _fields_ = [("m_type", c_ubyte),("m_length", c_ushort),
                 ("flags", c_ubyte), ("value", c_ubyte)]    
                 
-#--------------------------- Bootstrap --------------------------------------
-if __name__ == '__main__':
-    print "hello  stack "

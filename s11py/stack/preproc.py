@@ -22,7 +22,7 @@ class GTP_PORT(object):
         return self._GTPU_PORT
 
     
-class GTPC_MSG:
+class GTPC_MSGTYPE:
 
     GTPC_Reserved = 0
     GTPC_EchoRequest = 1
@@ -102,7 +102,6 @@ class GTPC_MSG:
     GTPC_ReleaseAccessBearerRequest = 170
     GTPC_ReleaseAccessBearerResponse = 171
     
-    
     #SGW to SGSN/MME (S4/S11)
     GTPC_DownlinkDataNotification = 176
     GTPC_DownlinkDataAcknowledge = 177
@@ -118,10 +117,11 @@ class GTPC_MSG:
     GTPC_MBMSSessionUpdateResponse = 234
     GTPC_MBMSSessionStopRequest = 235
     GTPC_MBMSSessionStopResponse = 236
+
+
    
 #--------------------------- Bootstrap --------------------------------------
 if __name__ == '__main__':
-    print "hello  constant "
     
     gtp = GTPC_MSG()
     gtp.EchoRequest = 12
